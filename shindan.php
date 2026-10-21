@@ -8,10 +8,10 @@
  *   - このファイル自身以外の、ファイルの書き換え・削除・作成
  *
  * 読み取るもの:
- *   - PHP の版・動かし方（SAPI）・サーバーソフト名（SERVER_SOFTWARE）・関連する ini 設定
- *   - WordPress の版（wp-includes/version.php の先頭 8KB）
+ *   - PHP のバージョン・動かし方（SAPI）・サーバーソフト名（SERVER_SOFTWARE）・関連する ini 設定
+ *   - WordPress のバージョン（wp-includes/version.php の先頭 8KB）
  *   - プラグイン・mu-plugins の各 PHP ファイル、テーマの style.css の「先頭 8KB」（ヘッダ部分）
- *     から、名前・版・親テーマだけを取り出します。ファイルの中身は出力しません。
+ *     から、名前・バージョン・親テーマだけを取り出します。ファイルの中身は出力しません。
  *   - wp-content 直下に、advanced-cache.php などのドロップインがあるかどうか（名前だけ）
  *   読む場所は、このファイルを置いた場所と、その親（最大 3 階層）で見つかった WordPress の中だけです。
  *   シンボリックリンクの先が WordPress の外、または wp-config.php のときは、読みません。
@@ -129,7 +129,7 @@ function hdr($text, $name) {
     return '';
 }
 
-/* 1 つの PHP ファイルからプラグインのヘッダを読む。見つかれば array(名前, 版)、無ければ false */
+/* 1 つの PHP ファイルからプラグインのヘッダを読む。見つかれば array(名前, バージョン)、無ければ false */
 function plugin_header($path, $rootReal) {
     if (!isf($path) || !inside($path, $rootReal)) { return false; }
     $head = rd($path, 8192);
@@ -166,24 +166,24 @@ foreach (array('memory_limit', 'post_max_size', 'upload_max_filesize', 'max_file
     }
 }
 
-/* php.net が 2026-10-21 に出した修正版（CVE-2026-109618 / 109619）。版を足すときはここだけ直す */
+/* php.net が 2026-10-21 に出した修正バージョン（CVE-2026-109618 / 109619）。バージョンを足すときはここだけ直す */
 $fixed = array('8.2' => '8.2.35', '8.3' => '8.3.36', '8.4' => '8.4.27', '8.5' => '8.5.12');
 $parts = explode('.', $phpv);
 $branch = $parts[0] . '.' . (isset($parts[1]) ? (int)$parts[1] : 0);
 $suffix = (bool)preg_match('/^[0-9]+\.[0-9]+\.[0-9]+[^0-9.]/', $phpv);
 
 if (version_compare($phpv, '8.2', '<')) {
-    $notes[] = array('high', 'PHP ' . $phpv . ' は、php.net が今回の修正版を出している系統（8.2 以降）ではありません。'
-        . 'Linux ディストリビューションやホスティング会社が、版番号を上げずに修正を取り込んでいる場合は、この版番号だけでは判定できません。'
+    $notes[] = array('high', 'PHP ' . $phpv . ' は、php.net が今回の修正バージョンを出している系統（8.2 以降）ではありません。'
+        . 'Linux ディストリビューションやホスティング会社が、バージョン番号を上げずに修正を取り込んでいる場合は、このバージョン番号だけでは判定できません。'
         . '契約中のホスティング会社の告知を確認するか、PHP の更新・移行を検討してください。');
 } elseif (isset($fixed[$branch])) {
     if (version_compare($phpv, $fixed[$branch], '>=')) {
-        $notes[] = array('ok', 'PHP ' . $phpv . ' は、php.net の修正版（' . $fixed[$branch] . '）以降です。');
+        $notes[] = array('ok', 'PHP ' . $phpv . ' は、php.net の修正バージョン（' . $fixed[$branch] . '）以降です。');
     } else {
-        $notes[] = array('high', 'PHP ' . $phpv . ' は、php.net の修正版（' . $fixed[$branch] . '）より前です。更新が必要です。');
+        $notes[] = array('high', 'PHP ' . $phpv . ' は、php.net の修正バージョン（' . $fixed[$branch] . '）より前です。更新が必要です。');
     }
     if ($suffix) {
-        $notes[] = array('mid', '版番号に配布元の付記があります。修正の取り込み方は配布元によって異なるため、配布元の告知もご確認ください。');
+        $notes[] = array('mid', 'バージョン番号に配布元の付記があります。修正の取り込み方は配布元によって異なるため、配布元の告知もご確認ください。');
     }
 } else {
     $notes[] = array('mid', 'PHP ' . $phpv . ' は、このファイルの判定表にない系統です（判定基準日: ' . $BASIS_DATE . '）。判定できません。');
@@ -357,7 +357,7 @@ $labels = array('high' => '要対応', 'mid' => '確認', 'ok' => '問題なし'
 <?php foreach ($notes as $n) { ?>
 <div class="n <?php echo h($n[0]); ?>"><b><?php echo h($labels[$n[0]]); ?></b>　<?php echo h($n[1]); ?></div>
 <?php } ?>
-<p style="font-size:14px;color:#555">これは設定と版から見た目安で、脆弱性の有無の断定ではありません。判定基準日: <?php echo h($BASIS_DATE); ?>。プラグイン・テーマは「インストール済み」で、有効かどうかは判定していません。</p>
+<p style="font-size:14px;color:#555">これは設定とバージョンから見た目安で、脆弱性の有無の断定ではありません。判定基準日: <?php echo h($BASIS_DATE); ?>。プラグイン・テーマは「インストール済み」で、有効かどうかは判定していません。</p>
 <h2>診断結果（テキスト）</h2>
 <textarea readonly onclick="this.select()"><?php echo h($report); ?></textarea>
 <p style="font-size:13px;color:#555">この内容は、サイトの構成を示す情報です。診断を依頼している場合は、依頼先から指定された方法でお渡しください。公開の掲示板やチャットには、貼らないでください。<?php if ($state === 'deleted') { ?>この画面を閉じると、内容は再表示できません（ファイルは削除済みのため）。<?php } ?></p>
