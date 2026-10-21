@@ -70,8 +70,9 @@ if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST')
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
 <title>PHP 事前診断</title>
-<style>body{font:16px/1.7 sans-serif;max-width:720px;margin:24px auto;padding:0 16px}button{font:inherit;padding:12px 24px;cursor:pointer}</style>
+<style>body{background:#fff;color:#111;font:16px/1.7 sans-serif;max-width:720px;margin:24px auto;padding:0 16px}button{font:inherit;padding:12px 24px;cursor:pointer}</style>
 </head><body>
 <h1>PHP 事前診断</h1>
 <p>ボタンを押すと、PHP とサイトの状況を調べて、結果を画面に表示します。<b>結果の表示と同時に、このファイルはサーバーから削除されます。</b></p>
@@ -340,8 +341,9 @@ $labels = array('high' => '要対応', 'mid' => '確認', 'ok' => '問題なし'
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
 <title>PHP 事前診断</title>
-<style>body{font:16px/1.7 sans-serif;max-width:720px;margin:24px auto;padding:0 16px}textarea{width:100%;height:320px;font:13px/1.5 monospace}.n{padding:8px 12px;margin:6px 0;border-left:6px solid #999;background:#f4f4f4}.high{border-color:#d92d20}.mid{border-color:#e0a800}.ok{border-color:#067647}.okt{color:#067647}.ng{color:#d92d20;font-weight:bold}</style>
+<style>body{background:#fff;color:#111;font:16px/1.7 sans-serif;max-width:720px;margin:24px auto;padding:0 16px}textarea{width:100%;height:320px;font:13px/1.5 monospace}.n{padding:8px 12px;margin:6px 0;border-left:6px solid #999;background:#f4f4f4}.high{border-color:#d92d20}.mid{border-color:#e0a800}.ok{border-color:#067647}.okt{color:#067647}.ng{color:#d92d20;font-weight:bold}</style>
 </head><body>
 <h1>PHP 事前診断</h1>
 <?php if ($state === 'deleted') { ?>
